@@ -21,22 +21,51 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
 			break;
 
 		case "get":
-			const userById = await getContactById(id);
-			console.log("userById", userById);
-			break;
+			try {
+				if (!id) {
+					throw new Error("Please enter ID. Type -i <type>, or --id <type> ");
+				}
+				const userById = await getContactById(id);
+				console.log("userById", userById);
+				break;
+			} catch (e) {
+				console.warn(e.message);
+				break;
+			}
 
 		case "add":
-			const addedUser = await addContact({ name, email, phone });
-			console.log("addedUser", addedUser);
-			break;
+			try {
+				if (!name) {
+					throw new Error("Please enter name. Type -n <type>, or --name <type> ");
+				} else if (!email) {
+					throw new Error("Please enter email. Type -e <type>, or --email <type> ");
+				} else if (!phone) {
+					throw new Error("Please enter phone. Type -p <type>, or --phone <type> ");
+				}
+				const addedUser = await addContact({ name, email, phone });
+				console.log("addedUser", addedUser);
+				break;
+			} catch (e) {
+				console.warn(e.message);
+				break;
+			}
 
 		case "remove":
-			const deletedUser = await removeContact(id);
-			console.log("deletedUser", deletedUser);
-			break;
+			try {
+				if (!id) {
+					throw new Error("Please enter ID. Type -i <type>, or --id <type> ");
+				}
+
+				const deletedUser = await removeContact(id);
+				console.log("deletedUser", deletedUser);
+				break;
+			} catch (e) {
+				console.warn(e.message);
+				break;
+			}
 
 		default:
-			console.warn("\x1B[31m Unknown action type!");
+			console.warn("\x1B[31m Unknown action type! Please, enter -a list | get | add | remove, or --action list | get | add | remove");
 	}
 };
 
